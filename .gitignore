@@ -1,0 +1,10 @@
+*.exe
+*.out
+*.o
+c_core/analyzer
+c_core/detector
+c_core/game_engine
+c_core/quiz_bank
+score.txt
+.DS_Store
+node_modules/
