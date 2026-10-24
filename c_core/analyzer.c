@@ -52,5 +52,14 @@ int main(int argc, char *argv[]) {
     }
 
     fclose(fp);
+
+    if (malloc_count == free_count) {
+        printf("Анализ файла: Код: %d стр. | Комментарии: %d стр. | Пустые: %d стр. | Память (malloc/free): %d/%d [Статус: ОК, утечек нет]\n",
+               code_lines, comment_lines, empty_lines, malloc_count, free_count);
+    } else {
+        printf("Анализ файла: Код: %d стр. | Комментарии: %d стр. | Пустые: %d стр. | Память (malloc/free): %d/%d [ВНИМАНИЕ: Возможна утечка памяти!]\n",
+               code_lines, comment_lines, empty_lines, malloc_count, free_count);
+    }
+
     return 0;
 }
