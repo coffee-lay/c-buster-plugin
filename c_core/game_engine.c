@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Игровой движок и система достижений C-Buster (Стандарт C23, LLVM Clang)
 
-// Функция чтения текущих очков игрока из файла score.txt
+
+// Функция чтения текущих очков
 int read_score(void) {
     FILE *fp = fopen("score.txt", "r");
     if (fp == nullptr) {
@@ -18,7 +18,7 @@ int read_score(void) {
     return score;
 }
 
-// Функция сохранения новых очков игрока в файл score.txt
+// Функция сохранения новых очков игрока
 void save_score(int score) {
     FILE *fp = fopen("score.txt", "w");
     if (fp != nullptr) {
@@ -27,7 +27,7 @@ void save_score(int score) {
     }
 }
 
-// Определение игрового ранга (бейджа достижений) по очкам
+// Определение ранга
 const char* get_rank(int score) {
     if (score >= 40) {
         return "Божество Указателей";
@@ -43,7 +43,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // Режим вывода текущего счета и ранга для статус-бара VS Code
     bool is_status_mode = (strcmp(argv[1], "status") == 0);
     if (is_status_mode) {
         int score = read_score();
@@ -51,5 +50,28 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    return 0;
+    bool is_check_mode = (strcmp(argv[1], "check_bug") == 0);
+    if (is_check_mode) {
+        if (argc < 3 || argv[2] == nullptr) {
+            printf("Ошибка: не передан номер строки для проверки.\n");
+            return 1;
+        }
+
+        int clicked_line = atoi(argv[2]);
+        bool is_hit = (clicked_line == 5);
+
+        if (is_hit) {
+            int new_score = read_score() + 10;
+            save_score(new_score);
+            printf("БАГ ОБЕЗВРЕЖЕН на строке 5! (+10 очков) | Всего очков: %d | Достижение: %s\n",
+                   new_score, get_rank(new_score));
+        } else {
+            printf("Мимо! На строке %d багов нет. Внимательнее изучите условия if, scanf и границы массивов!\n",
+                   clicked_line);
+        }
+        return 0;
+    }
+
+    printf("Неизвестная команда игрового движка.\n");
+    return 1;
 }
