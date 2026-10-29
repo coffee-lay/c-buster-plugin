@@ -2,73 +2,39 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Функция для определения текстового ранга игрока по его очкам */
-const char* get_rank(int score) {
-    if (score >= 40) {
-        return "Божество Указателей";
-    } else if (score >= 20) {
-        return "Охотник за багами";
-    } else {
-        return "Стажёр SimpleIT";
+ 
+
+//Function of game score
+int read_score(void) {
+    FILE *fp = fopen("score.txt", "r");
+    // Используем ключевое слово nullptr из стандарта C23
+    if (fp == nullptr) {
+        return 0;
+    }
+    int score = 0;
+    if (fscanf(fp, "%d", &score) != 1) {
+        score = 0;
+    }
+    fclose(fp);
+    return score;
+}
+
+//Function of saving game score
+void save_score(int score) {
+    FILE *fp = fopen("score.txt", "w");
+    if (fp != nullptr) {
+        fprintf(fp, "%d\n", score);
+        fclose(fp);
     }
 }
 
-/* Главная функция программы, принимающая аргументы командной строки */
 int main(int argc, char *argv[]) {
-    // Если аргументов нет или первый аргумент не совпадает с командами
-    if (argc < 2) {
-        printf("Ошибка: Неверные параметры запуска утилиты game_engine.");
+    if (argc < 2 || argv[1] == nullptr) {
+        printf("Ошибка: укажите режим работы (check_bug или status).\n");
         return 1;
     }
 
-    int score = 0; // Переменная для хранения текущих очков игрока
-    FILE *file = fopen("score.txt", "r"); // Пробуем открыть файл с очками для чтения
-
-    // Если файл успешно открылся, считываем текущее количество очков
-    if (file != NULL) {
-        fscanf(file, "%d", &score);
-        fclose(file); // Обязательно закрываем файл после чтения
-    }
-
-    /* РЕЖИМ 1: Проверка строки с багом (аргумент "check_bug") */
-    if (strcmp(argv[1], "check_bug") == 0) {
-        // Проверяем, что переданы все необходимые аргументы (всего должно быть 4: утилита, режим, строка, файл)
-        if (argc < 4) {
-            printf("Ошибка: Для проверки бага нужно передать номер строки и путь к файлу.");
-            return 1;
-        }
-
-        // Преобразуем переданный номер строки из строки в целое число
-        int clicked_line = atoi(argv[2]);
-
-        // Если игрок угадал и кликнул на 5-ю строку, где всегда сидит баг
-        if (clicked_line == 5) {
-            score += 10; // Начисляем 10 призовых очков
-
-            // Открываем файл score.txt для перезаписи актуального счета
-            file = fopen("score.txt", "w");
-            if (file != NULL) {
-                fprintf(file, "%d", score);
-                fclose(file); // Закрываем файл после записи
-            }
-
-            // Выводим строго одну чистую строку без лишних \n в середине текста для VS Code
-            printf("БАГ ОБЕЗВРЕЖЕН на строке 5! (+10 очков) | Всего очков: %d | Достижение: %s", score, get_rank(score));
-        } else {
-            // Если игрок промахнулся и кликнул на любую другую строку
-            printf("Мимо! На строке %d багов нет. Внимательнее изучите условия, scanf и границы массивов!", clicked_line);
-        }
-    }
-    /* РЕЖИМ 2: Запрос текущего статуса игрока (аргумент "status") */
-    else if (strcmp(argv[1], "status") == 0) {
-        // Выводим текущее состояние игрока в одну строку
-        printf("Очки: %d | Ранг: %s", score, get_rank(score));
-    }
-    /* Обработка ситуации, если передан неизвестный режим */
-    else {
-        printf("Ошибка: Неизвестный режим работы утилиты.");
-        return 1;
-    }
-
-    return 0; // Успешное завершение программы
+    int current_score = read_score();
+    printf("Текущие очки игрока: %d\n", current_score);
+    return 0;
 }
