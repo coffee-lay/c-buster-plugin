@@ -15,14 +15,26 @@ int main(int argc, char *argv[]) {
 
     int ch = 0;
     int line_num = 1;
+    int current_depth = 0;
+    int max_depth = 0;
 
     while ((ch = fgetc(fp)) != EOF) {
         if (ch == '\n') {
             line_num++;
+        } else if (ch == '{') {
+            current_depth++;
+            if (current_depth > max_depth) {
+                max_depth = current_depth;
+            }
+        } else if (ch == '}') {
+            current_depth--;
+            if (current_depth < 0) {
+                current_depth = 0;
+            }
         }
     }
 
     fclose(fp);
-    printf("Файл проверен. Всего строк: %d\n", line_num);
+    printf("Максимальная глубина вложенности: %d\n", max_depth);
     return 0;
 }
