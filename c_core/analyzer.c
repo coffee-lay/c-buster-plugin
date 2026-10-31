@@ -1,8 +1,12 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 
 int main(int argc, char *argv[]) {
+    SetConsoleOutputCP(65001);
+
     if (argc < 2) {
         return 1;
     }
