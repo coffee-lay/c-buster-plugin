@@ -1,0 +1,84 @@
+{
+  "name": "c-buster-plugin",
+  "displayName": "C-Buster: Тренажёр охотника за багами в C23",
+  "description": "Обучающая игра-тренажёр и статический инспектор кода на языке C для VS Code",
+  "version": "1.0.0",
+  "publisher": "cbuster-team",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Education",
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "*"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cbuster.helloWorld",
+        "title": "C-Buster: Hello World",
+        "icon": "$(megaphone)"
+      },
+      {
+        "command": "cbuster.startGame",
+        "title": "C-Buster: Начать игру (Открыть уровень)",
+        "icon": "$(play)"
+      },
+      {
+        "command": "cbuster.checkBug",
+        "title": "C-Buster: Тут баг! (Проверить эту строку)"
+      },
+      {
+        "command": "cbuster.analyzeFile",
+        "title": "C-Buster: Подсчет строк и памяти (C23)"
+      },
+      {
+        "command": "cbuster.detectSpaghetti",
+        "title": "C-Buster: Детектор Спагетти-кода (C23)"
+      },
+      {
+        "command": "cbuster.quizAndJoke",
+        "title": "C-Buster: Викторина по C23/Git и Шутка дня"
+      },
+      {
+        "command": "cbuster.resetTimer",
+        "title": "C-Buster: Сбросить таймер кодера"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "cbuster.helloWorld",
+          "group": "navigation@1"
+        },
+        {
+          "command": "cbuster.startGame",
+          "group": "navigation@2"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "cbuster.checkBug",
+          "group": "1_cbuster@1"
+        },
+        {
+          "command": "cbuster.analyzeFile",
+          "group": "1_cbuster@2"
+        },
+        {
+          "command": "cbuster.detectSpaghetti",
+          "group": "1_cbuster@3"
+        },
+        {
+          "command": "cbuster.quizAndJoke",
+          "group": "1_cbuster@4"
+        }
+      ]
+    }
+  }
+}
